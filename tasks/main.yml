@@ -1,2 +1,26 @@
 ---
 # tasks file for ansible-nginx
+
+- name: apt install
+  apt:
+    name: nginx-full
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Disable default Nginx site
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify:
+  - Reload Nginx
+
+- name: Add default configuration
+  template:
+    src: shore.j2
+    dest: /etc/nginx/enabled-conf/shore
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+  - Restart Nginx
