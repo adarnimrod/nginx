@@ -1,12 +1,36 @@
 ---
 # tasks file for ansible-nginx
 
+- assert:
+    that:
+    - 
+
 - name: apt install
+  when: ansible_pkg_mgr == 'apt'
   apt:
     name: nginx-full
     state: present
     update_cache: yes
     cache_valid_time: 3600
+
+- name: pkg install
+  openbsd_pkg:
+    name: nginx
+    state: present
+
+- name: Get installed version
+  nginx_facts:
+
+- name: Create configuration directories
+  with_items:
+  - /etc/nginx/sites-enabled
+  - /etc/nginx/conf.d
+  file:
+    path: '{{ item }}'
+    owner: root
+    group: root
+    mode: '0755'
+    state: directory
 
 - name: Disable default Nginx site
   file:
@@ -18,9 +42,23 @@
 - name: Add default configuration
   template:
     src: shore.j2
-    dest: /etc/nginx/enabled-conf/shore
+    dest: /etc/nginx/conf.d/shore
     owner: root
     group: root
     mode: 0644
   notify:
   - Restart Nginx
+
+- name: Allow HTTPS in UFW
+  ufw:
+    rule: allow
+    port: 443
+    proto: tcp
+
+- meta: flush_handlers
+
+- name: Wait for the service to come online
+  wait_for:
+    host: '{{ ansible_default_ipv4["address"] }}'
+    port: 443
+    state: started

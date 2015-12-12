@@ -6,7 +6,8 @@ An Ansible role to install Nginx.
 Requirements
 ------------
 
-Debian Wheezy or later.
+Debian Wheezy or later or OpenBSD 5.7 or later (Ubuntu Precise and Trusty should
+also work, but are untested).
 
 Role Variables
 --------------
@@ -24,7 +25,21 @@ Example Playbook
 
     - hosts: servers
       roles:
-      - role: nginx
+      - nginx
+
+Example requirements.yml
+------------------------
+::
+
+    - src: https://www.shore.co.il/cgit/ansible-common
+      scm: git
+      path: roles/
+      name: common
+
+    - src: https://www.shore.co.il/cgit/ansible-nginx
+      scm: git
+      path: roles/
+      name: nginx
 
 License
 -------
@@ -42,10 +57,5 @@ at: https://www.shore.co.il/cgit/.
 TODO
 ----
 
-- Implement.
-- Server health.
+- OpenBSD support.
 - OCSP.
-- Collectd metrics.
-- Log to syslog.
-- Assertions.
-- Wait for server to come online.
