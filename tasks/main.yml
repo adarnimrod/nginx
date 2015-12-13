@@ -3,7 +3,8 @@
 
 - assert:
     that:
-    - 
+    - ansible_os_family in [ 'Debian', 'OpenBSD' ]
+    - ansible_distribution_release in [ 'wheezy', 'jessie', 'trusty', 'precise', '5.7', '5.8' ]
 
 - name: apt install
   when: ansible_pkg_mgr == 'apt'
