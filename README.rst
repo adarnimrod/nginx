@@ -2,16 +2,18 @@ Nginx
 #####
 
 Install Nginx with common minimal configuration. Just package installation,
-create configuration directories and copy templates (if any). The rest is up
-whoever uses the role.
+create configuration directories and copy templates (if any). Configuration
+templates can be placed inside :code:`templates/nginx.conf.d/` and server
+templates inside :code:`templates/nginx.sites-enabled/` either inside the role
+or relative to the playbook.
 
 Requirements
 ------------
 
 - `Ansible 2.0 or later <https://www.ansible.com/>`_.
 - `OpenBSD <http://www.openbsd.org/>`_ or `Debian <http://www.debian.org/>`_
-  (OpenBSD 5.9 and Debian Jessie are tested, other versions or derivative should
-  also work).
+  (OpenBSD 5.9 and Debian Jessie are tested, other versions or derivatives
+  should also work).
 
 Role Variables
 --------------
