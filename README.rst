@@ -1,50 +1,53 @@
-ansible-nginx
-#############
+Nginx
+#####
 
-An Ansible role to install Nginx.
+Install Nginx with common minimal configuration. Just package installation,
+create configuration directories and copy templates (if any). The rest is up
+whoever uses the role.
 
 Requirements
 ------------
 
-Debian Wheezy or later or OpenBSD 5.7 or later (Ubuntu Precise and Trusty should
-also work, but are untested).
+- `Ansible 2.0 or later <https://www.ansible.com/>`_.
+- `OpenBSD <http://www.openbsd.org/>`_ or `Debian <http://www.debian.org/>`_
+  (OpenBSD 5.9 and Debian Jessie are tested, other versions or derivative should
+  also work).
 
 Role Variables
 --------------
 
-None.
+See :code:`defaults/main.yml`.
 
 Dependencies
 ------------
 
-`Common role <https://www.shore.co.il/cgit/ansible-common/>`_
+See :code:`meta/main.yml`.
 
 Example Playbook
 ----------------
-::
 
-    - hosts: servers
-      roles:
-      - nginx
+See :code:`tests/playbook.yml`.
 
-Example requirements.yml
-------------------------
-::
+Testing
+-------
 
-    - src: https://www.shore.co.il/cgit/ansible-common
-      scm: git
-      path: roles/
-      name: common
+To install the dependencies:
 
-    - src: https://www.shore.co.il/cgit/ansible-nginx
-      scm: git
-      path: roles/
-      name: nginx
+.. code:: shell
+
+    ansible-galaxy install git+file://$(pwd),$(git rev-parse --abbrev-ref HEAD)
+
+To run the full test suite:
+
+.. code:: shell
+
+    molecule test
 
 License
 -------
 
-This software is licnesed under the MIT licese (see the ``LICENSE.txt`` file).
+This software is licensed under the MIT license (see the :code:`LICENSE.txt`
+file).
 
 Author Information
 ------------------
@@ -52,10 +55,4 @@ Author Information
 Nimrod Adar, `contact me <nimrod@shore.co.il>`_ or visit my `website
 <https://www.shore.co.il/>`_. Patches are welcome via `git send-email
 <http://git-scm.com/book/en/v2/Git-Commands-Email>`_. The repository is located
-at: https://www.shore.co.il/cgit/.
-
-TODO
-----
-
-- OpenBSD support.
-- OCSP.
+at: https://www.shore.co.il/git/.

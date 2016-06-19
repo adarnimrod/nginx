@@ -1,8 +1,0 @@
-ssl_certificate {{ tls_cert_path }};
-ssl_certificate_key {{ tls_key_path }};
-ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-ssl_ciphers !kRSA:!3DES:!RC4:!DES:!MD5:!aNULL:!NULL:AESGCM+ECDH:AES256+ECDH:AES128:+SHA1;
-ssl_prefer_server_ciphers on;
-{% if (nginx['major'] == 1 and nginx['minor'] >= 6) or nginx['major'] > 1 %}
-errorlog syslog:server=unix:/dev/log
-{% endif %}

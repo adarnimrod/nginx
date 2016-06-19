@@ -1,8 +1,12 @@
--   repo: git://github.com/pre-commit/pre-commit-hooks
-    sha: cf550fcab3f12015f8676b8278b30e1a5bc10e70
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    sha: 6dfcb89af3c9b4d172cc2e5a8a2fa0f54615a338
     hooks:
     -   id: check-added-large-files
     -   id: check-json
     -   id: check-xml
     -   id: check-yaml
     -   id: check-merge-conflict
+-   repo: https://www.shore.co.il/git/ansible-pre-commit/
+    sha: 94b506c144d4e22ebc1deef637a818db13bcaca5
+    hooks:
+    -   id: ansible-pre-commit

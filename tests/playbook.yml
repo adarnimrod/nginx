@@ -1,0 +1,7 @@
+---
+- hosts: ansible-role-nginx-openbsd
+  gather_facts: false
+  roles: [ role: ansible-role-openbsd-bootstrap ]
+
+- hosts: all
+  roles: [ role: ansible-role-nginx ]

@@ -1,10 +1,9 @@
 ---
-# tasks file for ansible-nginx
+# tasks file for ansible-role-nginx
 
 - assert:
     that:
     - ansible_os_family in [ 'Debian', 'OpenBSD' ]
-    - ansible_distribution_release in [ 'wheezy', 'jessie', 'trusty', 'precise', '5.7', '5.8' ]
 
 - name: apt install
   when: ansible_pkg_mgr == 'apt'
@@ -15,12 +14,10 @@
     cache_valid_time: 3600
 
 - name: pkg install
+  when: ansible_pkg_mgr == 'openbsd_pkg'
   openbsd_pkg:
-    name: nginx
+    name: '{{ nginx_openbsd_pkg[ansible_distribution_release] }}'
     state: present
-
-- name: Get installed version
-  nginx_facts:
 
 - name: Create configuration directories
   with_items:
@@ -29,9 +26,20 @@
   file:
     path: '{{ item }}'
     owner: root
-    group: root
-    mode: '0755'
+    group: 0
+    mode: 0o0755
     state: directory
+
+- name: Include configuration directories
+  with_items:
+  - /etc/nginx/sites-enabled/*
+  - /etc/nginx/conf.d/*.conf
+  lineinfile:
+    dest: /etc/nginx/nginx.conf
+    line: '	include {{ item }};'
+    insertafter: 'http {'
+  notify:
+  - Reload Nginx
 
 - name: Disable default Nginx site
   file:
@@ -40,26 +48,32 @@
   notify:
   - Reload Nginx
 
-- name: Add default configuration
+- name: Copy sites templates
+  with_fileglob:
+  - templates/nginx.sites-enabled/*
   template:
-    src: shore.j2
-    dest: /etc/nginx/conf.d/shore
-    owner: root
-    group: root
-    mode: 0644
+      src: '{{ item }}'
+      dest: /etc/nginx/sites-enabled/
+      owner: root
+      group: 0
+      mode: 0o0644
   notify:
-  - Restart Nginx
+  - Reload Nginx
 
-- name: Allow HTTPS in UFW
-  ufw:
-    rule: allow
-    port: 443
-    proto: tcp
+- name: Copy configuration templates
+  with_fileglob:
+  - templates/nginx.conf.d/*
+  template:
+      src: '{{ item }}'
+      dest: /etc/nginx/conf.d/
+      owner: root
+      group: 0
+      mode: 0o0644
+  notify:
+  - Reload Nginx
 
-- meta: flush_handlers
-
-- name: Wait for the service to come online
-  wait_for:
-    host: '{{ ansible_default_ipv4["address"] }}'
-    port: 443
-    state: started
+- name: Enable service
+  service:
+      name: nginx
+      state: running
+      enabled: yes

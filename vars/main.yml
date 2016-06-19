@@ -1,2 +1,9 @@
 ---
-# vars file for ansible-nginx
+# vars file for ansible-role-nginx
+
+nginx_openbsd_pkg:
+    '5.5': nginx-1.5.7
+    '5.6': nginx-1.5.7p3
+    '5.7': nginx-1.7.10
+    '5.8': nginx-1.9.3p3
+    '5.9': nginx-1.9.10
