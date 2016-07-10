@@ -5,7 +5,7 @@
     that:
     - ansible_os_family in [ 'Debian', 'OpenBSD' ]
 
-- name: apt install
+- name: APT install
   when: ansible_pkg_mgr == 'apt'
   apt:
     name: nginx-full
@@ -30,14 +30,20 @@
     mode: 0o0755
     state: directory
 
-- name: Include configuration directories
+- name: Configure
   with_items:
-  - /etc/nginx/sites-enabled/*
-  - /etc/nginx/conf.d/*.conf
+  - line: include /etc/nginx/sites-enabled/*;
+  - line: include /etc/nginx/conf.d/*.conf;
+  - line: access_log syslog:localhost;
+    regexp: access_log
+  - line: error_log syslog:locahost;
+    regexp: error_log
   lineinfile:
     dest: /etc/nginx/nginx.conf
-    line: '	include {{ item }};'
+    line: '{{ item.line }}'
     insertafter: 'http {'
+    regexp: '{{ item.regexp|default(omit) }}'
+    state: present
   notify:
   - Reload Nginx
 
@@ -48,32 +54,33 @@
   notify:
   - Reload Nginx
 
-- name: Copy sites templates
+- name: Copy templates
   with_fileglob:
-  - templates/nginx.sites-enabled/*
+  - templates/nginx/sites-enabled/*
+  - templates/nginx/conf.d/*.conf
   template:
       src: '{{ item }}'
-      dest: /etc/nginx/sites-enabled/
+      dest: '/etc/{{ item }}'
       owner: root
       group: 0
       mode: 0o0644
   notify:
   - Reload Nginx
 
-- name: Copy configuration templates
-  with_fileglob:
-  - templates/nginx.conf.d/*
-  template:
-      src: '{{ item }}'
-      dest: /etc/nginx/conf.d/
-      owner: root
-      group: 0
-      mode: 0o0644
+- name: Alias emails to root
+  lineinfile:
+      dest: '{{ aliases_file[ansible_os_family] }}'
+      create: yes
+      line: 'nginx: root'
+      regexp: 'nginx:'
   notify:
-  - Reload Nginx
+      - Update SMTPd database
 
 - name: Enable service
   service:
       name: nginx
       state: running
       enabled: yes
+
+- wait_for:
+    port: 80

@@ -10,3 +10,7 @@
   service:
     name: nginx
     state: reloaded
+
+- name: Update SMTPd database
+  when: ansible_os_family == 'OpenBSD'
+  command: /usr/bin/newaliases
