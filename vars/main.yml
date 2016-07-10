@@ -11,3 +11,7 @@ nginx_openbsd_pkg:
 aliases_file:
     OpenBSD: /etc/mail/aliases
     Debian: /etc/aliases
+
+nginx_user:
+    OpenBSD: www
+    Debian: nginx

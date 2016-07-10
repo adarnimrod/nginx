@@ -33,10 +33,12 @@
 - name: Configure
   with_items:
   - line: include /etc/nginx/sites-enabled/*;
+    regexp: /etc/nginx/sites-enabled
   - line: include /etc/nginx/conf.d/*.conf;
-  - line: access_log syslog:localhost;
+    regexp: /etc/nginx/conf.d
+  - line: access_log syslog:server=unix:/dev/log;
     regexp: access_log
-  - line: error_log syslog:locahost;
+  - line: error_log syslog:server=unix:/dev/log;
     regexp: error_log
   lineinfile:
     dest: /etc/nginx/nginx.conf
@@ -54,13 +56,24 @@
   notify:
   - Reload Nginx
 
-- name: Copy templates
+- name: Copy virtualhosts templates
   with_fileglob:
-  - templates/nginx/sites-enabled/*
   - templates/nginx/conf.d/*.conf
   template:
       src: '{{ item }}'
-      dest: '/etc/{{ item }}'
+      dest: '/etc/nginx/sites-enabled/{{ item|basename }}'
+      owner: root
+      group: 0
+      mode: 0o0644
+  notify:
+  - Reload Nginx
+
+- name: Copy config templates
+  with_fileglob:
+  - templates/nginx/conf.d/*.conf
+  template:
+      src: '{{ item }}'
+      dest: '/etc/nginx/conf.d/{{ item|basename }}'
       owner: root
       group: 0
       mode: 0o0644
@@ -71,8 +84,8 @@
   lineinfile:
       dest: '{{ aliases_file[ansible_os_family] }}'
       create: yes
-      line: 'nginx: root'
-      regexp: 'nginx:'
+      line: '{{ nginx_user[ansible_os_family] }}: root'
+      regexp: '{{ nginx_user[ansible_os_family] }}:'
   notify:
       - Update SMTPd database
 
@@ -81,6 +94,3 @@
       name: nginx
       state: running
       enabled: yes
-
-- wait_for:
-    port: 80
