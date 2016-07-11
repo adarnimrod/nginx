@@ -3,9 +3,10 @@ Nginx
 
 Install Nginx with common minimal configuration. Just package installation,
 create configuration directories and copy templates (if any). Configuration
-templates can be placed inside :code:`templates/nginx.conf.d/` and server
-templates inside :code:`templates/nginx.sites-enabled/` either inside the role
-or relative to the playbook.
+templates can be placed inside :code:`templates/nginx/conf.d/` and server
+templates inside :code:`templates/nginx/sites-enabled/` either inside the role
+or relative to the playbook. OCSP, XSS and other such headers are not always
+possible and therefore out of the scope of this role and left up to the user.
 
 Requirements
 ------------
