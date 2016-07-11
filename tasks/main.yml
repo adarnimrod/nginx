@@ -36,9 +36,9 @@
     regexp: /etc/nginx/sites-enabled
   - line: include /etc/nginx/conf.d/*.conf;
     regexp: /etc/nginx/conf.d
-  - line: access_log syslog:server=unix:/dev/log;
+  - line: 'access_log syslog:server=127.0.0.1;'
     regexp: access_log
-  - line: error_log syslog:server=unix:/dev/log;
+  - line: 'error_log syslog:server=127.0.0.1;'
     regexp: error_log
   lineinfile:
     dest: /etc/nginx/nginx.conf

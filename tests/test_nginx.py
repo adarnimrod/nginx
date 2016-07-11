@@ -12,8 +12,8 @@ def test_nginx_service(Service):
 
 config_directives = ['include /etc/nginx/sites-enabled/*;',
                      'include /etc/nginx/conf.d/*.conf;',
-                     'access_log syslog:server=unix:/dev/log;',
-                     'error_log syslog:server=unix:/dev/log;']
+                     'access_log syslog:server=127.0.0.1;',
+                     'error_log syslog:server=127.0.0.1;']
 
 
 @pytest.mark.parametrize('directive', config_directives)
