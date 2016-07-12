@@ -4,4 +4,6 @@
   roles: [ ansible-role-openbsd-bootstrap ]
 
 - hosts: all
-  roles: [ ansible-role-nginx ]
+  roles:
+      - ansible-role-ca-store
+      - ansible-role-nginx
