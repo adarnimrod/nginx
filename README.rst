@@ -60,6 +60,5 @@ at: https://www.shore.co.il/git/.
 TODO
 ----
 
-- dhparams.
 - Status and/or metrics (http_status and http_stub_status modules).
 - Rate limit (http_limit_req and http_limit_conn modules).
