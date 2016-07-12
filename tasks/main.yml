@@ -1,9 +1,15 @@
 ---
 # tasks file for ansible-role-nginx
 
+- name: Check if dhparams file exists
+  stat:
+    path: /etc/ssl/dhparams.pem
+  register: stat_dhparams
+
 - assert:
     that:
     - ansible_os_family in [ 'Debian', 'OpenBSD' ]
+    - stat_dhparams.stat.exists
 
 - name: APT install
   when: ansible_pkg_mgr == 'apt'
