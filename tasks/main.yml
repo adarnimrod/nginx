@@ -25,6 +25,9 @@
     name: '{{ nginx_openbsd_pkg[ansible_distribution_release] }}'
     state: present
 
+- name: Get Nginx version
+  nginx_facts:
+
 - name: Create configuration directories
   with_items:
   - /etc/nginx/sites-enabled

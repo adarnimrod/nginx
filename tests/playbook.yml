@@ -7,3 +7,9 @@
   roles:
       - ansible-role-ca-store
       - ansible-role-nginx
+
+  post_tasks: # For testing.
+      - name: Install curl
+        package:
+            name: curl
+            state: present
