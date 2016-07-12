@@ -46,6 +46,8 @@
     regexp: access_log
   - line: 'error_log syslog:server=127.0.0.1;'
     regexp: error_log
+  - line: 'ssl_dhparam /etc/ssl/dhparams.pem;'
+    regexp: ssl_dhparam
   lineinfile:
     dest: /etc/nginx/nginx.conf
     line: '{{ item.line }}'
