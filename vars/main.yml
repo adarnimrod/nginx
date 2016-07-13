@@ -14,4 +14,4 @@ aliases_file:
 
 nginx_user:
     OpenBSD: www
-    Debian: nginx
+    Debian: www-data
