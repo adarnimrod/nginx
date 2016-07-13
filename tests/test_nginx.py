@@ -54,3 +54,7 @@ def test_nginx_stub_status(File, Command):
 
 def test_nginx_socket(Socket):
     assert Socket('tcp://0.0.0.0:80').is_listening
+
+
+def test_nginx_limit(File):
+    assert File('/etc/nginx/conf.d/limit.conf').is_file

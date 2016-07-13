@@ -56,8 +56,3 @@ Nimrod Adar, `contact me <nimrod@shore.co.il>`_ or visit my `website
 <https://www.shore.co.il/>`_. Patches are welcome via `git send-email
 <http://git-scm.com/book/en/v2/Git-Commands-Email>`_. The repository is located
 at: https://www.shore.co.il/git/.
-
-TODO
-----
-
-- Rate limit (http_limit_req and http_limit_conn modules).

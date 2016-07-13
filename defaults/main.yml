@@ -1,2 +1,8 @@
 ---
 # defaults file for ansible-role-nginx
+
+requests_per_second_limit: 10
+requests_per_second_burst: 50
+concurrent_connections: 10
+transfer_rate_limit_in_k: 1024
+transfer_rate_limit_after_k_sent: 1024
