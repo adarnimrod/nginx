@@ -50,3 +50,7 @@ def test_nginx_stub_status(File, Command):
         'curl --resolve stub_status:80:127.0.0.1 http://stub_status/')
     assert curl.rc == 0
     assert 'Active connections:' in curl.stdout
+
+
+def test_nginx_socket(Socket):
+    assert Socket('tcp://0.0.0.0:80').is_listening
