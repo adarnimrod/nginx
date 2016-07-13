@@ -21,8 +21,9 @@ def test_nginx_config_directive(File, directive):
     assert directive in File('/etc/nginx/nginx.conf').content_string
 
 
-def test_nginx_config(File, Command):
-    assert Command('nginx -t').rc == 0
+def test_nginx_config(File, Command, Sudo):
+    with Sudo():
+        assert Command('nginx -t').rc == 0
     assert File('/etc/nginx/nginx.conf').exists
     assert File('/etc/nginx/conf.d').is_directory
     assert File('/etc/nginx/sites-enabled').is_directory
