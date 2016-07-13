@@ -106,6 +106,8 @@
       state: running
       enabled: yes
 
+- meta: flush_handlers
+
 - name: Wait for Nginx to recieve requests
   wait_for:
       port: 80
