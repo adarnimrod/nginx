@@ -30,6 +30,21 @@
     name: '{{ nginx_openbsd_pkg[ansible_distribution_release] }}'
     state: present
 
+- name: Add to ssl-cert group
+  user:
+      append: yes
+      groups: ssl-cert
+      name: '{{ nginx_user[ansible_os_family] }}'
+
+- name: Alias emails to root
+  lineinfile:
+      dest: '{{ aliases_file[ansible_os_family] }}'
+      create: yes
+      line: '{{ nginx_user[ansible_os_family] }}: root'
+      regexp: '{{ nginx_user[ansible_os_family] }}:'
+  notify:
+      - Update SMTPd database
+
 - name: Get Nginx version
   nginx_facts:
 
@@ -97,15 +112,6 @@
       mode: 0o0644
   notify:
   - Reload Nginx
-
-- name: Alias emails to root
-  lineinfile:
-      dest: '{{ aliases_file[ansible_os_family] }}'
-      create: yes
-      line: '{{ nginx_user[ansible_os_family] }}: root'
-      regexp: '{{ nginx_user[ansible_os_family] }}:'
-  notify:
-      - Update SMTPd database
 
 - name: Enable service
   service:
