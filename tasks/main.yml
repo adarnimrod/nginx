@@ -70,6 +70,7 @@
 - name: Copy virtualhosts templates
   with_fileglob:
   - templates/nginx/sites-enabled/*
+  - '{{ playbook_dir }}/templates/nginx/sites-enabled/*'
   template:
       src: '{{ item }}'
       dest: '/etc/nginx/sites-enabled/{{ item|basename }}'
@@ -82,6 +83,7 @@
 - name: Copy config templates
   with_fileglob:
   - templates/nginx/conf.d/*.conf
+  - '{{ playbook_dir }}/templates/nginx/conf.d/*.conf'
   template:
       src: '{{ item }}'
       dest: '/etc/nginx/conf.d/{{ item|basename }}'
