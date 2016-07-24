@@ -6,10 +6,15 @@
     path: /etc/ssl/dhparams.pem
   register: stat_dhparams
 
+- name: Get groups
+  getent:
+      database: group
+
 - assert:
     that:
     - ansible_os_family in [ 'Debian', 'OpenBSD' ]
     - stat_dhparams.stat.exists
+    - '"ssl-cert" in getent_group'
 
 - name: APT install
   when: ansible_pkg_mgr == 'apt'
