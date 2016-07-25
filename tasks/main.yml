@@ -37,10 +37,11 @@
       name: '{{ nginx_user[ansible_os_family] }}'
 
 - name: Alias emails to root
+  when: nginx_mail_alias is defined
   lineinfile:
       dest: '{{ aliases_file[ansible_os_family] }}'
       create: yes
-      line: '{{ nginx_user[ansible_os_family] }}: root'
+      line: '{{ nginx_user[ansible_os_family] }}: {{ nginx_mail_alias }}'
       regexp: '{{ nginx_user[ansible_os_family] }}:'
   notify:
       - Update SMTPd database
