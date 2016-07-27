@@ -7,3 +7,5 @@ nginx_concurrent_connections: 10
 nginx_transfer_rate_limit_in_k: 1024
 nginx_transfer_rate_limit_after_k_sent: 1024
 nginx_mail_alias: root
+nginx_access_log: 'syslog:server=127.0.0.1'
+nginx_error_log: 'syslog:server=127.0.0.1'

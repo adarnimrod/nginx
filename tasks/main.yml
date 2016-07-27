@@ -1,5 +1,8 @@
 ---
 # tasks file for ansible-role-nginx
+- assert:
+    that:
+    - ansible_os_family in [ 'Debian', 'OpenBSD' ]
 
 - name: Check if dhparams file exists
   stat:
@@ -9,12 +12,6 @@
 - name: Get groups
   getent:
       database: group
-
-- assert:
-    that:
-    - ansible_os_family in [ 'Debian', 'OpenBSD' ]
-    - stat_dhparams.stat.exists
-    - '"ssl-cert" in getent_group'
 
 - name: APT install
   when: ansible_pkg_mgr == 'apt'
@@ -31,6 +28,7 @@
     state: present
 
 - name: Add to ssl-cert group
+  when: "'ssl-cert' in getent_group"
   user:
       append: yes
       groups: ssl-cert
@@ -60,18 +58,12 @@
     mode: 0o0755
     state: directory
 
-- name: Configure
+- name: Include configuration directories
   with_items:
   - line: include /etc/nginx/sites-enabled/*;
     regexp: /etc/nginx/sites-enabled
   - line: include /etc/nginx/conf.d/*.conf;
     regexp: /etc/nginx/conf.d
-  - line: 'access_log syslog:server=127.0.0.1;'
-    regexp: access_log
-  - line: 'error_log syslog:server=127.0.0.1;'
-    regexp: error_log
-  - line: 'ssl_dhparam /etc/ssl/dhparams.pem;'
-    regexp: ssl_dhparam
   lineinfile:
     dest: /etc/nginx/nginx.conf
     line: '{{ item.line }}'
