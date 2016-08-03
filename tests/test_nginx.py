@@ -10,15 +10,22 @@ def test_nginx_service(Service):
         pass
 
 
-config_directives = ['include /etc/nginx/sites-enabled/*;',
-                     'include /etc/nginx/conf.d/*.conf;',
-                     'access_log syslog:server=127.0.0.1;',
-                     'error_log syslog:server=127.0.0.1;']
+include_directives = ['include /etc/nginx/sites-enabled/*;',
+                     'include /etc/nginx/conf.d/*.conf;']
 
 
-@pytest.mark.parametrize('directive', config_directives)
-def test_nginx_config_directive(File, directive):
+@pytest.mark.parametrize('directive', include_directives)
+def test_nginx_include_directive(File, directive):
     assert directive in File('/etc/nginx/nginx.conf').content_string
+
+
+log_directives = [ 'access_log syslog:server=127.0.0.1;',
+                   'error_log syslog:server=127.0.0.1;']
+
+
+@pytest.mark.parametrize('directive', log_directives)
+def test_nginx_log_directive(File, directive):
+    assert directive in File('/etc/nginx/conf.d/log.conf').content_string
 
 
 def test_nginx_config(File, Command, Sudo):
@@ -42,7 +49,7 @@ def test_nginx_alias(File, Ansible, User):
 def test_nginx_dhparams(File):
     assert File('/etc/ssl/dhparams.pem').is_file
     assert 'ssl_dhparam /etc/ssl/dhparams.pem;' in File(
-        '/etc/nginx/nginx.conf').content_string
+        '/etc/nginx/conf.d/dhparams.conf').content_string
 
 
 def test_nginx_stub_status(File, Command):
