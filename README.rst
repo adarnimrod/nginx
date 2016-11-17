@@ -11,7 +11,8 @@ possible and therefore out of the scope of this role and left up to the user.
 Requirements
 ------------
 
-See :code:`meta/main.yml` and assertions at top of :code:`tasks/main.yml`.
+See :code:`meta/main.yml`, :code:`tests/requirements.yml` and assertions at
+the top of :code:`tasks/main.yml`.
 
 Role Variables
 --------------
@@ -31,17 +32,21 @@ See :code:`tests/playbook.yml`.
 Testing
 -------
 
-To install the dependencies:
+Testing requires Virtualbox and Vagrant and Python 2.7. Install the Python
+dependencies, add pre-commit hooks by running:
 
 .. code:: shell
 
-    ansible-galaxy install git+file://$(pwd),$(git rev-parse --abbrev-ref HEAD) -p .molecule/roles
+    pip install -r tests/requirements.txt
+    pre-commit install
 
 To run the full test suite:
 
 .. code:: shell
 
-    molecule test
+    ansible-galaxy install git+file://$(pwd),$(git rev-parse --abbrev-ref HEAD) -p .molecule/roles
+    molecule test --platform all
+    pre-commit run --all-files
 
 License
 -------

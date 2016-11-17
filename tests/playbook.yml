@@ -1,11 +1,11 @@
 ---
 - hosts: ansible-role-nginx-openbsd
   gather_facts: false
-  roles: [ ansible-role-openbsd-bootstrap ]
+  roles: [openbsd_bootstrap]
 
 - hosts: all
   roles:
-      - ansible-role-ca-store
+      - ca-store
       - ansible-role-nginx
 
   post_tasks: # For testing.
