@@ -83,7 +83,7 @@
 
 - name: Copy virtualhosts templates
   with_fileglob:
-  - templates/nginx/sites-enabled/*
+  - '{{ role_path }}/templates/nginx/sites-enabled/*'
   - '{{ playbook_dir }}/templates/nginx/sites-enabled/*'
   template:
       src: '{{ item }}'
@@ -96,7 +96,7 @@
 
 - name: Copy config templates
   with_fileglob:
-  - templates/nginx/conf.d/*.conf
+  - '{{ role_path }}/templates/nginx/conf.d/*.conf'
   - '{{ playbook_dir }}/templates/nginx/conf.d/*.conf'
   template:
       src: '{{ item }}'
