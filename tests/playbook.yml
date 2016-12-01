@@ -1,12 +1,16 @@
 ---
-- hosts: ansible-role-nginx-openbsd
+- hosts: nginx-openbsd
   gather_facts: false
-  roles: [openbsd_bootstrap]
+  roles: [adarnimrod.openbsd-bootstrap]
+
+- hosts: nginx-xenial
+  gather_facts: false
+  roles: [adarnimrod.debian-bootstrap]
 
 - hosts: all
   roles:
-      - ca-store
-      - ansible-role-nginx
+      - adarnimrod.ca-store
+      - nginx
 
   post_tasks: # For testing.
       - name: Install curl

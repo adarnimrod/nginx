@@ -1,6 +1,5 @@
 ---
-# handlers file for ansible-role-nginx
-
+# handlers file for nginx
 - name: Restart Nginx
   service:
     name: nginx

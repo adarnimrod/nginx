@@ -1,4 +1,7 @@
 import pytest
+from testinfra.utils.ansible_runner import AnsibleRunner
+
+testinfra_hosts = AnsibleRunner('.molecule/ansible_inventory').get_hosts('all')
 
 
 def test_nginx_service(Service):
@@ -11,7 +14,7 @@ def test_nginx_service(Service):
 
 
 include_directives = ['include /etc/nginx/sites-enabled/*;',
-                     'include /etc/nginx/conf.d/*.conf;']
+                      'include /etc/nginx/conf.d/*.conf;']
 
 
 @pytest.mark.parametrize('directive', include_directives)
@@ -19,8 +22,8 @@ def test_nginx_include_directive(File, directive):
     assert directive in File('/etc/nginx/nginx.conf').content_string
 
 
-log_directives = [ 'access_log syslog:server=127.0.0.1;',
-                   'error_log syslog:server=127.0.0.1;']
+log_directives = ['access_log syslog:server=127.0.0.1;',
+                  'error_log syslog:server=127.0.0.1;']
 
 
 @pytest.mark.parametrize('directive', log_directives)

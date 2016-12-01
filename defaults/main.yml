@@ -1,6 +1,5 @@
 ---
-# defaults file for ansible-role-nginx
-
+# defaults file for nginx
 nginx_requests_per_second_limit: 10
 nginx_requests_per_second_burst: 50
 nginx_concurrent_connections: 10
