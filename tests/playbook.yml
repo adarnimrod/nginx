@@ -17,3 +17,9 @@
         package:
             name: curl
             state: present
+
+      - name: APT install
+        when: ansible_pkg_mgr == 'apt'
+        apt:
+            name: ['net-tools']
+            state: present
