@@ -48,6 +48,13 @@
 - name: Get Nginx version
   nginx_facts:
 
+- name: Remove default error log directive
+  when: nginx_error_log is defined
+  lineinfile:
+      regexp: error_log
+      dest: /etc/nginx/nginx.conf
+      state: absent
+
 - name: Create configuration directories
   with_items:
   - /etc/nginx/sites-enabled
