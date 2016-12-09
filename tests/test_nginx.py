@@ -39,20 +39,14 @@ def test_nginx_config(File, Command, Sudo):
     assert File('/etc/nginx/sites-enabled').is_directory
 
 
-def test_nginx_alias(File, Ansible, User, TestinfraBackend):
-    connection = TestinfraBackend.get_connection_type()
-    if connection == 'docker':
+def test_nginx_alias(File, SystemInfo, User):
+    if SystemInfo.type == 'OpenBSD':
+        aliasfile = '/etc/mail/aliases'
+        wwwuser = 'www'
+    elif SystemInfo.type == 'linux' and SystemInfo.distribution in ['debian',
+                                                                    'ubuntu']:
         aliasfile = '/etc/aliases'
         wwwuser = 'www-data'
-    elif connection == 'ansible':
-        ansible_os_family = Ansible('setup')['ansible_facts'][
-            'ansible_os_family']
-        if ansible_os_family == 'Debian':
-            aliasfile = '/etc/aliases'
-            wwwuser = 'www-data'
-        elif ansible_os_family == 'OpenBSD':
-            aliasfile = '/etc/mail/aliases'
-            wwwuser = 'www'
     assert User(wwwuser).exists
     assert File(aliasfile).contains(wwwuser + ': root')
 
