@@ -6,6 +6,7 @@ nginx_openbsd_pkg:
     '5.7': nginx-1.7.10
     '5.8': nginx-1.9.3p3
     '5.9': nginx-1.9.10
+    '6.0': nginx-1.10.1
 
 aliases_file:
     OpenBSD: /etc/mail/aliases
