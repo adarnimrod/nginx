@@ -119,7 +119,7 @@
 - name: Enable service
   service:
       name: nginx
-      state: running
+      state: started
       enabled: yes
 
 - meta: flush_handlers
