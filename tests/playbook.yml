@@ -8,7 +8,7 @@
   roles: [adarnimrod.debian-bootstrap]
 
 - hosts: all
-  strategy: free
+  serial: 1
   roles:
       - adarnimrod.ca-store
       - nginx
