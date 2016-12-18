@@ -10,7 +10,7 @@
 - hosts: all
   serial: 1
   roles:
-      - adarnimrod.ca-store
+      - ca-store
       - nginx
 
   post_tasks: # For testing.
