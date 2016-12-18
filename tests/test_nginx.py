@@ -40,7 +40,7 @@ def test_nginx_config(File, Command, Sudo):
 
 
 def test_nginx_alias(File, SystemInfo, User):
-    if SystemInfo.type == 'OpenBSD':
+    if SystemInfo.type == 'openbsd':
         aliasfile = '/etc/mail/aliases'
         wwwuser = 'www'
     elif SystemInfo.type == 'linux' and SystemInfo.distribution in ['debian',
@@ -52,9 +52,9 @@ def test_nginx_alias(File, SystemInfo, User):
 
 
 def test_nginx_dhparams(File):
-    assert File('/etc/ssl/dhparams.pem').is_file
-    assert 'ssl_dhparam /etc/ssl/dhparams.pem;' in File(
-        '/etc/nginx/conf.d/dhparams.conf').content_string
+    if File('/etc/ssl/dhparams.pem').is_file:
+        assert 'ssl_dhparam /etc/ssl/dhparams.pem;' in File(
+            '/etc/nginx/conf.d/dhparams.conf').content_string
 
 
 def test_nginx_stub_status(File, Command):
