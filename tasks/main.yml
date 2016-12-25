@@ -12,10 +12,6 @@
     path: /etc/ssl/dhparams.pem
   register: stat_dhparams
 
-- name: Get groups
-  getent:
-      database: group
-
 - name: APT install
   when: ansible_pkg_mgr == 'apt'
   apt:
@@ -29,13 +25,6 @@
   openbsd_pkg:
     name: '{{ nginx_openbsd_pkg[ansible_distribution_release] }}'
     state: present
-
-- name: Add to ssl-cert group
-  when: "'ssl-cert' in getent_group"
-  user:
-      append: yes
-      groups: ssl-cert
-      name: '{{ nginx_user[ansible_os_family] }}'
 
 - name: Alias emails to root
   when: nginx_mail_alias is defined
