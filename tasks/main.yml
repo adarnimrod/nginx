@@ -89,6 +89,7 @@
       owner: root
       group: 0
       mode: 0o0644
+      validate: nginx -t
   notify:
   - Reload Nginx
 
@@ -102,6 +103,7 @@
       owner: root
       group: 0
       mode: 0o0644
+      validate: nginx -t
   notify:
   - Reload Nginx
 
