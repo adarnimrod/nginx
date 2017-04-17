@@ -5,6 +5,10 @@ ansible:
   diff: True
   config_file: ../ansible.cfg
 
+molecule:
+  ignore_paths:
+  - .tox
+
 dependency:
   name: galaxy
   requirements_file: tests/requirements.yml
@@ -13,53 +17,35 @@ vagrant:
   providers:
   - name: virtualbox
     type: virtualbox
+    options:
+        cpus: 1
   platforms:
-  - name: openbsd
-    box: kaorimatz/openbsd-6.0-amd64
-  - name: jessie
-    box: debian/jessie64
+  - name: openbsd60
+    box: fnichol/openbsd-6.0-i386
   - name: xenial
-    box: ubuntu/xenial64
+    box: ubuntu/xenial32
   - name: trusty
-    box: ubuntu/trusty64
+    box: ubuntu/trusty32
+  - name: precise
+    box: hashicorp/precise32
+  - name: stretch
+    box: remram/debian-9-i386
+  - name: jessie
+    box: deb/jessie-i386
+  - name: wheezy
+    box: bmorg/debian-wheezy-i386
   instances:
   - name: nginx
     options:
         append_platform_to_hostname: yes
   raw_config_args:
+  - 'vm.boot_timeout = 600'
   - 'vm.synced_folder ".", "/vagrant", disabled: true'
-  - 'vbguest.auto_update = false'
-  - 'landrush.enabled = false'
-  - 'landrush_ip.override = false'
-
-docker:
-  containers:
-  - name: nginx-xenial
-    image: ubuntu
-    image_version: xenial
-    command: /sbin/init
-    privileged: True
-    volume_mounts:
-      - /sys/fs/cgroup:/sys/fs/cgroup
-      - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
-    environment:
-        DEBIAN_FRONTEND: noninteractive
-        container: docker
-  - name: nginx-jessie
-    image: debian
-    image_version: jessie
-    command: /sbin/init
-    privileged: True
-    volume_mounts:
-      - /sys/fs/cgroup:/sys/fs/cgroup
-      - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
-    environment:
-        DEBIAN_FRONTEND: noninteractive
-        container: docker
-  - name: nginx-trusty
-    image: ubuntu-upstart
-    image_version: trusty
-    command: /sbin/init
-    environment:
-        DEBIAN_FRONTEND: noninteractive
-        container: docker
+  - 'vbguest.auto_update = false if Vagrant.has_plugin?("vbguest")'
+  - 'landrush.enabled = false if Vagrant.has_plugin?("landrush")'
+  - 'landrush_ip.override = false if Vagrant.has_plugin?("landrush")'
+  - |
+      vm.provider "virtualbox" do |v|
+        v.customize "pre-boot", ["modifyvm", :id, "--hwvirtex", "off"]
+        v.memory = ENV['VBOX_MEMORY'].to_i if ENV.has_key?('VBOX_MEMORY')
+      end

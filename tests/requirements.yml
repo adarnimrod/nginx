@@ -5,3 +5,5 @@
   name: debian-bootstrap
 - src: adarnimrod.ca-store
   name: ca-store
+- src: adarnimrod.users
+  name: users
