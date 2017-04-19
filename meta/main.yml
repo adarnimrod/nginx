@@ -3,18 +3,20 @@ galaxy_info:
   description: Install Nginx with common minimal configuration
   company: Shore technologies
   license: MIT
-  min_ansible_version: 2.0
+  min_ansible_version: 2.3
   platforms:
   - name: OpenBSD
     versions:
     - 6.0
-    - 5.9
-  - name: Debian
-    versions:
-    - jessie
   - name: Ubuntu
     versions:
-    - trusty
     - xenial
+    - trusty
+    - precise
+  - name: Debian
+    versions:
+    - stretch
+    - jessie
+    - wheezy
   galaxy_tags: [ web ]
 dependencies: []
