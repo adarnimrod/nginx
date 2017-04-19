@@ -1,5 +1,6 @@
 server {
-    listen [::]:80;
+    listen 80;
+    listen [::]:80 ipv6only=on;
     server_name stub_status;
     {{ "stub_status" if nginx["version"]|version_compare("1.7.5", ">") else "stub_status on" }};
 }
