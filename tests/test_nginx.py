@@ -4,13 +4,14 @@ from testinfra.utils.ansible_runner import AnsibleRunner
 testinfra_hosts = AnsibleRunner('.molecule/ansible_inventory').get_hosts('all')
 
 
-def test_nginx_service(Service):
-    service = Service('nginx')
-    assert service.is_running
-    try:
-        assert service.is_enabled
-    except NotImplementedError:
-        pass
+def test_nginx_service(Service, Sudo):
+    with Sudo():
+        service = Service('nginx')
+        assert service.is_running
+        try:
+            assert service.is_enabled
+        except NotImplementedError:
+            pass
 
 
 include_directives = ['include /etc/nginx/sites-enabled/*;',
