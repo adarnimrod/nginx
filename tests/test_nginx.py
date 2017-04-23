@@ -23,15 +23,6 @@ def test_nginx_include_directive(File, directive):
     assert directive in File('/etc/nginx/nginx.conf').content_string
 
 
-log_directives = ['access_log syslog:server=127.0.0.1;',
-                  'error_log syslog:server=127.0.0.1;']
-
-
-@pytest.mark.parametrize('directive', log_directives)
-def test_nginx_log_directive(File, directive):
-    assert directive in File('/etc/nginx/conf.d/log.conf').content_string
-
-
 def test_nginx_config(File, Command, Sudo):
     with Sudo():
         assert Command('nginx -t').rc == 0
