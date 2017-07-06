@@ -22,7 +22,7 @@
 - name: pkg install
   when: ansible_pkg_mgr == 'openbsd_pkg'
   openbsd_pkg:
-    name: nginx%1
+    name: nginx--
     state: present
 
 - name: Alias emails to root
