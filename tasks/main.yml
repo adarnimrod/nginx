@@ -5,7 +5,6 @@
     that:
     - ansible_os_family in aliases_file
     - ansible_os_family in nginx_user
-    - ansible_pkg_mgr != 'openbsd_pkg' or ansible_distribution_version in nginx_openbsd_pkg
 
 - name: Check if dhparams file exists
   stat:
@@ -23,7 +22,7 @@
 - name: pkg install
   when: ansible_pkg_mgr == 'openbsd_pkg'
   openbsd_pkg:
-    name: '{{ nginx_openbsd_pkg[ansible_distribution_version] }}'
+    name: nginx%1
     state: present
 
 - name: Alias emails to root
